@@ -1,0 +1,36 @@
+# Игнорируем папки и файлы, которые генерируются WordPress или хостингом
+
+# Файлы конфигурации, содержащие пароли — обычно редактируем вручную, не кладите в репозиторий
+wp-config.php
+
+# Логи и кеши
+*.log
+*.cache
+*.tmp
+
+# Папка uploads — обычно хранит медиа-файлы, их лучше не загружать в репозиторий (если не хотите)
+wp-content/uploads/
+
+# Папки с плагинами и темами, если вы не пишете их сами
+wp-content/plugins/
+wp-content/themes/twenty*/
+
+# Бэкапы и временные файлы
+*.bak
+*.swp
+*.swo
+*.zip
+
+# Системные файлы ОС
+.DS_Store
+Thumbs.db
+
+# Файлы IDE и редакторов (PhpStorm, VSCode и др.)
+.idea/
+.vscode/
+
+# node_modules (если используете node.js)
+node_modules/
+
+# Composer vendor (если используете composer)
+vendor/
