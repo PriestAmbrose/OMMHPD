@@ -13,7 +13,9 @@ wp-content/uploads/
 
 # Папки с плагинами и темами, если вы не пишете их сами
 wp-content/plugins/
-wp-content/themes/twenty*/
+wp-content/themes/twentytwentythree/
+wp-content/themes/twentytwentyfour/
+
 
 # Бэкапы и временные файлы
 *.bak
