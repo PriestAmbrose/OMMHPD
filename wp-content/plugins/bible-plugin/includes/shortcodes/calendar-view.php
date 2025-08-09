@@ -124,7 +124,8 @@ function bp_calendar_view_shortcode() {
       $next_link = add_query_arg(['bp_year' => $next_year, 'bp_month' => $next_month, 'bp_day' => 1]);
       $today_year = date('Y');
       $today_month = date('n');
-      $today_link = add_query_arg(['bp_year' => $today_year, 'bp_month' => $today_month, 'bp_day' => 1]);
+      $today_day = date('d');
+      $today_link = add_query_arg(['bp_year' => $today_year, 'bp_month' => $today_month, 'bp_day' => $today_day]);
       ?>
         <a href="<?php echo esc_url($prev_link); ?>">&laquo; Previous</a> |
         <a href="<?php echo esc_url($today_link); ?>">Today</a> |
