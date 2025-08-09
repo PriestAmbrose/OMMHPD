@@ -18,7 +18,6 @@ define( 'BIBLE_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
 
 // Load core includes
 require_once BIBLE_PLUGIN_DIR . 'includes/functions.php';
-require_once BIBLE_PLUGIN_DIR . 'includes/calendar.php';
 require_once BIBLE_PLUGIN_DIR . 'includes/ajax.php';
 require_once BIBLE_PLUGIN_DIR . 'includes/shortcode.php';
 

@@ -10,9 +10,8 @@ require_once plugin_dir_path(__FILE__) . 'shortcodes/calendar-view.php';
 require_once plugin_dir_path(__FILE__) . 'shortcodes/daily-content.php';
 
 function my_daily_content_shortcode() {
-  $calendar = bible_plugin_render_calendar();
   $todayContent = bible_plugin_after_pentecost_label(date('Y-m-d'));
 
-  return "<div id='bible-day-content'>{$todayContent}</div>" . $calendar;
+  return "<div id='bible-day-content'>{$todayContent}</div>";
 }
 add_shortcode('daily_content', 'my_daily_content_shortcode');
