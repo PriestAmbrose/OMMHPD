@@ -6,8 +6,8 @@ Version: 1.0
 Author: Your Name
 */
 
-function my_daily_content_shortcode() {
-  return "Hello, this is my daily content!";
-}
+// Include shortcode file
+require_once plugin_dir_path(__FILE__) . 'includes/shortcode.php';
 
+// Register shortcode
 add_shortcode('my_daily_content', 'my_daily_content_shortcode');
