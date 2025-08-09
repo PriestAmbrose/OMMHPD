@@ -28,6 +28,8 @@ if ( ! function_exists( 'bible_plugin_get_site_timezone' ) ) {
   }
 }
 
+
+
 /**
  * Calculate Orthodox Pascha (Easter) date for a given year.
  * Uses the Meeus/Julian algorithm then converts to Gregorian by adding 13 days
@@ -88,12 +90,13 @@ if ( ! function_exists( 'bible_plugin_ordinal' ) ) {
  * - "Friday of the 5th Week after Pentecost"
  */
 if ( ! function_exists( 'bible_plugin_after_pentecost_label' ) ) {
-  function bible_plugin_after_pentecost_label( DateTime $date = null ) {
+  function bible_plugin_after_pentecost_label(string $date = null ) {
     $tz = bible_plugin_get_site_timezone();
 
     if ( ! $date ) {
       $date = new DateTime( 'now', $tz );
     } else {
+      $date = new DateTime($date);
       // ensure timezone and normalize to midnight
       $date->setTimezone( $tz );
     }

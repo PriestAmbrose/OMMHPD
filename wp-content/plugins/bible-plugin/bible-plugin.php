@@ -1,28 +1,30 @@
 <?php
-/*
-Plugin Name: Bible Plugin
-Description: Liturgical helpers and shortcodes (e.g. "Week after Pentecost").
-Version: 1.0
-Author: Your Name
-Text Domain: bible-plugin
-*/
+/**
+ * Plugin Name: Bible Plugin
+ * Plugin URI: https://orthomission.com
+ * Description: Displays Bible readings, Pentecost day counter, and other Orthodox calendar features.
+ * Version: 1.0
+ * Author: Priest Ambrose
+ * Author URI: https://orthomission.com
+ */
 
 if ( ! defined( 'ABSPATH' ) ) {
-  exit;
+  exit; // No direct access
 }
 
-if ( ! defined( 'BIBLE_PLUGIN_DIR' ) ) {
-  define( 'BIBLE_PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
-}
+// Define constants
+define( 'BIBLE_PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
+define( 'BIBLE_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
 
-// Load helpers
+// Load core includes
 require_once BIBLE_PLUGIN_DIR . 'includes/functions.php';
+require_once BIBLE_PLUGIN_DIR . 'includes/calendar.php';
+require_once BIBLE_PLUGIN_DIR . 'includes/ajax.php';
+require_once BIBLE_PLUGIN_DIR . 'includes/shortcode.php';
+require_once BIBLE_PLUGIN_DIR . 'includes/other-modules.php';
 
-// Load shortcodes
-require_once BIBLE_PLUGIN_DIR . 'includes/shortcodes/after-pentecost.php';
-
-// (optional) load textdomain for translations
-function bible_plugin_load_textdomain() {
-  load_plugin_textdomain( 'bible-plugin', false, dirname( plugin_basename( __FILE__ ) ) . '/languages' );
-}
-add_action( 'init', 'bible_plugin_load_textdomain' );
+// Enqueue assets
+add_action( 'wp_enqueue_scripts', function() {
+  wp_enqueue_style( 'bible-plugin-style', BIBLE_PLUGIN_URL . 'assets/css/style.css' );
+  wp_enqueue_script( 'bible-plugin-script', BIBLE_PLUGIN_URL . 'assets/js/script.js', array('jquery'), null, true );
+});
