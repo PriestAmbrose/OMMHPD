@@ -21,7 +21,6 @@ require_once BIBLE_PLUGIN_DIR . 'includes/functions.php';
 require_once BIBLE_PLUGIN_DIR . 'includes/calendar.php';
 require_once BIBLE_PLUGIN_DIR . 'includes/ajax.php';
 require_once BIBLE_PLUGIN_DIR . 'includes/shortcode.php';
-require_once BIBLE_PLUGIN_DIR . 'includes/other-modules.php';
 
 // Enqueue assets
 add_action( 'wp_enqueue_scripts', function() {
