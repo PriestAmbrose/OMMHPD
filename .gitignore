@@ -12,7 +12,6 @@ wp-config.php
 wp-content/uploads/
 
 # Папки с плагинами и темами, если вы не пишете их сами
-wp-content/plugins/
 wp-content/themes/twentytwentythree/
 wp-content/themes/twentytwentyfour/
 

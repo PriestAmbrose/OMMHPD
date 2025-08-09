@@ -156,3 +156,19 @@ if ( ! function_exists( 'twentytwentyfive_format_binding' ) ) :
 		}
 	}
 endif;
+
+function my_daily_content_shortcode() {
+  $today = date('Y-m-d');
+  $day   = date('d');
+  $month = date('m');
+
+  if ($month == '08' && $day == '09') {
+    return "Today is August 9 — special message here.";
+  } elseif ($day % 2 == 0) {
+    return "It's an even day — here is some content for even days.";
+  } else {
+    return "It's an odd day — here is some content for odd days.";
+  }
+}
+add_shortcode('daily_content', 'my_daily_content_shortcode');
+
