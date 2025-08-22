@@ -91,6 +91,12 @@ if ( ! function_exists( 'bible_plugin_ordinal' ) ) {
  */
 if ( ! function_exists( 'bible_plugin_after_pentecost_label' ) ) {
   function bible_plugin_after_pentecost_label(string $date = null ) {
+    $matthew = include __DIR__ . '/bible-readings/matthew.php';
+    $mark    = include __DIR__ . '/bible-readings/mark.php';
+    $luke    = include __DIR__ . '/bible-readings/luke.php';
+    $john    = include __DIR__ . '/bible-readings/john.php';
+    $apostle = include __DIR__ . '/bible-readings/apostle.php';
+    $slavonic_dates = include __DIR__ . '/bible-readings/dates.php';
     $tz = bible_plugin_get_site_timezone();
 
     if ( ! $date ) {
@@ -115,6 +121,7 @@ if ( ! function_exists( 'bible_plugin_after_pentecost_label' ) ) {
     }
 
     $days_after = (int) floor( ( $date->getTimestamp() - $pentecost->getTimestamp() ) / DAY_IN_SECONDS );
+    $days_after_pascha = (int) floor( ( $date->getTimestamp() - $pascha->getTimestamp() ) / DAY_IN_SECONDS );
 
     if ( $days_after < 0 ) {
       return __( 'Before Pentecost this year', 'bible-plugin' );
@@ -145,7 +152,7 @@ if ( ! function_exists( 'bible_plugin_after_pentecost_label' ) ) {
 
     /* translators: 1: weekday (Monday), 2: ordinal week (3rd) */
     return sprintf( /* translators: "Monday of the 3rd Week after Pentecost" */
-      __( '%1$s of the %2$s Week after Pentecost', 'bible-plugin' ),
+      __( '%1$s of the %2$s Week after Pentecost ' . $slavonic_dates[$days_after_pascha], 'bible-plugin' ),
       $weekday,
       bible_plugin_ordinal( $week_number )
     );
