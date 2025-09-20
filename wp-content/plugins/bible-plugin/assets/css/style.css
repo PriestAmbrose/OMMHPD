@@ -1,0 +1,48 @@
+.psalm-verses {
+  background: #f8f9fa;
+  border-left: 4px solid #6c757d;
+  padding: 10px 15px;
+  margin: 15px 0;
+  font-family: "Georgia", serif;
+  font-size: 1.1em;
+  line-height: 1.6;
+}
+
+.psalm-verse {
+  margin-bottom: 8px;
+}
+
+.psalm-link {
+  margin-top: 10px;
+  text-align: right;
+}
+
+.psalm-link a {
+  text-decoration: none;
+  color: #0056b3;
+  font-weight: bold;
+}
+
+/* Register Acathist-Regular font */
+@font-face {
+  font-family: 'Acathist';
+  src: url('/wp-content/uploads/fonts/Acathist-Regular.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+/* Church Slavonic verses container */
+.lang-utfcs {
+  font-family: 'Acathist', serif !important; /* Use your uploaded font */
+  font-size: 15pt;
+  line-height: 1.2em;
+  background: #fdfcf8;
+  border-left: 4px solid #6c757d;
+  padding: 12px 15px;
+  margin: 15px 0;
+}
+
+/* Individual verse styling */
+.psalm-verse-cs {
+  margin-bottom: 8px;
+}
