@@ -22,7 +22,21 @@
   color: #0056b3;
   font-weight: bold;
 }
+.psalm-verse-cs {
+  margin-bottom: 8px;
+  font-family: 'Acathist', serif;
+  font-size: 15pt;
+  line-height: 1.2em;
+  display: flex;
+  align-items: flex-start;
+}
 
+.psalm-verse-cs .verse-number {
+  display: inline-block;
+  width: 50px;       /* фиксированная ширина для номера */
+  font-weight: bold;
+  color: #6c757d;
+}
 /* Register Acathist-Regular font */
 @font-face {
   font-family: 'Acathist';
