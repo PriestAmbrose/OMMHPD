@@ -35,13 +35,13 @@ function regular(): array
 {
   echo 'regular';
   return [
-    'Sunday'    => [  1, 2,3],
-    'Monday'    => [  4,5],
-    'Tuesday'   => [6,7,8  ],
-    'Wednesday' => [ 9, 10,11],
-    'Thursday'  => [ 12, 13, 14,],
-    'Friday'    => [15, 19, 20],
-    'Saturday'  =>[18,16,17],
+    'Sunday'    => [   2,1,3],
+    'Monday'    => [  4,5,6],
+    'Tuesday'   => [7,6,8  ],
+    'Wednesday' => [  10,9,11],
+    'Thursday'  => [  13, 12,14,],
+    'Friday'    => [ 19,15, 20],
+    'Saturday'  =>[16,18,17],
   ];
 }
 
@@ -55,7 +55,7 @@ function intense(): array
     'Wednesday' => [10, 11, 12 ],
     'Thursday'  => [ 13,14, 15,],
     'Friday'    => [19,20, 18],
-    'Saturday'  => [ 16, 17 ],
+    'Saturday'  => [ 16, 17,1 ],
   ];
 }
 
