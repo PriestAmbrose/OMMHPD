@@ -64,7 +64,7 @@ function lent(): array
   echo 'lent';
   return [
     'Sunday'    => [1,2, 3],
-    'Monday'    => [4,5,6,7,8,9],
+    'Monday'    => [8,4,5,6,7,9],
     'Tuesday'   => [10, 11,12,13,14,15,16 ],
     'Wednesday' => [19,20,1,2,3,4,5 ],
     'Thursday'  => [6,7,8,9,10,11,12],
