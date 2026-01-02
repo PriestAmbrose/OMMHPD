@@ -37,7 +37,7 @@ function regular(): array
   return [
     'Sunday'    => [ 3, 1, 2],
     'Monday'    => [ 5, 4],
-    'Tuesday'   => [ 8, 6, 7],
+    'Tuesday'   => [ 7,6,8  ],
     'Wednesday' => [11, 9, 10],
     'Thursday'  => [14, 12, 13 ],
     'Friday'    => [20, 15, 19],
@@ -63,11 +63,11 @@ function lent(): array
 {
   echo 'lent';
   return [
-    'Sunday'    => [ 3, 1,2],
-    'Monday'    => [5,6,7,8,9, 4],
+    'Sunday'    => [3,1,2],
+    'Monday'    => [7,8,9, 4,5,6],
     'Tuesday'   => [11,12,13,14,15,16, 10],
     'Wednesday' => [20,1,2,3,4,5, 19],
-    'Thursday'  => [6,7,8,9,10,11,12],
+    'Thursday'  => [10,11,12,6,7,8,9],
     'Friday'    => [14,15,19,20, 13],
     'Saturday'  => [ 17,18, 16],
   ];
