@@ -35,13 +35,13 @@ function regular(): array
 {
   echo 'regular';
   return [
-    'Sunday'    => [   2,1,3],
-    'Monday'    => [  4,5,6],
-    'Tuesday'   => [7,6,8  ],
-    'Wednesday' => [  10,9,11],
-    'Thursday'  => [  13, 12,14,],
-    'Friday'    => [ 19,15, 20],
-    'Saturday'  =>[16,18,17],
+    'Sunday'    => [ 3,  1,2],
+    'Monday'    => [  5,4],
+    'Tuesday'   => [8,6, 7 ],
+    'Wednesday' => [ 11, 9,10],
+    'Thursday'  => [   14,12,13],
+    'Friday'    => [ 20,15,19],
+    'Saturday'  =>[17,18,16],
   ];
 }
 
@@ -49,13 +49,13 @@ function intense(): array
 {
   echo 'intense';
   return [
-    'Sunday'    => [ 1, 2,3],
-    'Monday'    => [ 4,5, 6],
-    'Tuesday'   => [ 7, 8, 9],
-    'Wednesday' => [10, 11, 12 ],
-    'Thursday'  => [ 13,14, 15,],
-    'Friday'    => [19,20, 18],
-    'Saturday'  => [ 16, 17,1 ],
+    'Sunday'    => [ 3,1, 2],
+    'Monday'    => [ 5, 6,4],
+    'Tuesday'   => [  8, 9,7],
+    'Wednesday' => [ 11, 12,10 ],
+    'Thursday'  => [ 14, 15,13],
+    'Friday'    => [20, 18,19],
+    'Saturday'  => [  17,1,16 ],
   ];
 }
 
@@ -63,13 +63,13 @@ function lent(): array
 {
   echo 'lent';
   return [
-    'Sunday'    => [1,2, 3],
-    'Monday'    => [8,4,5,6,7,9],
-    'Tuesday'   => [10, 11,12,13,14,15,16 ],
-    'Wednesday' => [19,20,1,2,3,4,5 ],
+    'Sunday'    => [ 3,1,2,],
+    'Monday'    => [5,6,7,8,9,4],
+    'Tuesday'   => [ 11,12,13,14,15,16,10 ],
+    'Wednesday' => [20,1,2,3,4,5,19 ],
     'Thursday'  => [11,6,7,8,9,10,12],
-    'Friday'    => [13,14,15,19,20],
-    'Saturday'  => [16,17],
+    'Friday'    => [14,15,19,20,13],
+    'Saturday'  => [17,16],
   ];
 }
 
@@ -222,10 +222,10 @@ for ($d = clone $start; $d <= $end; $d->modify('+1 day')){
   }
 
   if($foundPart){
-    echo $d->format('Y-m-d') . $foundPart . "\n";
+    echo $d->format('Y-m-d') .$d->format('l'). $foundPart . "\n";
     $foundPart = null;
   }else{
-    echo $d->format('Y-m-d') . "parts finished for all kathismas" . print_r($kathismas) . " or not assigned\n";
+    echo $d->format('Y-m-d') .$d->format('l')."parts finished for all kathismas" . print_r($kathismas) . " or not assigned\n";
     print_left($kathismaParts);
   }
 }
