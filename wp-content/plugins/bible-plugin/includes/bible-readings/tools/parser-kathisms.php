@@ -1,6 +1,7 @@
 <?php
 
-$html = file_get_contents('https://azbyka.ru/biblia/?Ps.1-8&utfcs');
+$html = file_get_contents('https://azbyka.ru/biblia/?Ps.143-150&utfcs');
+$kathisma = 'kathisma_20.php';
 
 libxml_use_internal_errors(true);
 
@@ -16,6 +17,7 @@ $verses = [];
 
 foreach ($nodes as $node) {
   $verseId = $node->getAttribute('data-verse'); // Ps.1:1
+  echo "verId is" .$verseId;
   $text = trim($node->textContent);
 
   // Убираем лишние спаны и галочки
@@ -32,6 +34,7 @@ foreach ($nodes as $node) {
 }
 
 $remainedVerses = count(array_merge(...array_map('array_values', $verses)));
+echo $remainedVerses;
 $parts = [];
 $currentPsalm = array_key_first($verses);
 $currentVerse = array_key_first($verses[$currentPsalm]);
@@ -98,6 +101,6 @@ for ($i = 0; $i < $numParts; $i++) {
 
 
 // Сохраняем массив в PHP-файл
-file_put_contents('kathisma_1.php', '<?php return ' . var_export($parts, true) . ';');
+file_put_contents($kathisma, '<?php return ' . var_export($parts, true) . ';');
 
-echo "kathisma_1.php успешно сохранён.\n";
+echo $kathisma . " успешно сохранён.\n";
