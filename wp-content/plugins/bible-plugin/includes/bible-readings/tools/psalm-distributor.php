@@ -205,8 +205,10 @@ function readingProgram(DateTime $date): callable
   return 'nothing';
 }
 
-$start = new DateTime('2026-01-19'); // начальная дата
-$end   = new DateTime('2027-01-18'); // конечная дата
+$start = new DateTime('2026-01-16'); // начальная дата
+$end   = new DateTime('2027-01-15'); // конечная дата
+$allKathismata = require __DIR__ . "/all_kathismata.php";
+$allReadings = [];
 
 for ($d = clone $start; $d <= $end; $d->modify('+1 day')){
   $kathismas = readingProgram($d)()[$d->format('l')];
@@ -216,10 +218,13 @@ for ($d = clone $start; $d <= $end; $d->modify('+1 day')){
     $part      = takeNextKathismaPart($kathisma, $kathismaParts);
     if($part){
       $foundPart = " kathisma number $kathisma part  $part";
+      $allReadings[$d->format('Y-m-d')] = $allKathismata[$kathisma][$part-1];
       break;
     }
 
   }
+
+
 
   if($foundPart){
     echo $d->format('Y-m-d') .$d->format('l'). $foundPart . "\n";
@@ -229,3 +234,5 @@ for ($d = clone $start; $d <= $end; $d->modify('+1 day')){
     print_left($kathismaParts);
   }
 }
+
+file_put_contents('psalms_schedule.php', '<?php return ' . var_export($allReadings, true) . ';');

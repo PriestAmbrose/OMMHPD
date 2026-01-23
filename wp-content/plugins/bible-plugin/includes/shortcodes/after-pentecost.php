@@ -7,7 +7,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 
 function bp_after_pentecost_shortcode() {
-  $psalms = include __DIR__ . '/../bible-readings/psalms.php';
+  $schedule = include __DIR__ . '/../bible-readings/tools/psalms_schedule.php';
   $start_day = new DateTime('2025-09-12'); // Example date for Orthodox Pentecost
   // Default: today’s date (in site timezone)
   $tz = new DateTimeZone( get_option('timezone_string') ?: 'UTC' );
@@ -32,11 +32,11 @@ function bp_after_pentecost_shortcode() {
     $today = new DateTime('now', $tz);
   }
 
-  $interval = $start_day->diff($today);
+  $psalm = array_key_first($schedule[$today->format('Y-m-d')]);
 
 
-  '<a href="https://azbyka.ru/biblia/?Ps.' . $psalms[$interval->days] . '" target="_blank">Read Psalm ' . $psalms[$interval->days]. '</a>';
-  $url = "https://azbyka.ru/biblia/?Ps." . $psalms[$interval->days] ."&utfcs";
+  '<a href="https://azbyka.ru/biblia/?Ps.' . $psalm . '" target="_blank">Read Psalm ' . $psalm. '</a>';
+  $url = "https://azbyka.ru/biblia/?Ps." . $psalm ."&en-kjv";
 
   // Load HTML
   $html = file_get_contents($url);
@@ -66,7 +66,102 @@ function bp_after_pentecost_shortcode() {
                . '</div>';
 
   }
-  $output .= '<a href="'. $url . '" target="_blank">Read Psalm ' . $psalms[$interval->days] . '</a>';
+  $output .= '<a href="'. $url . '" target="_blank">Read Psalm ' . $psalm . '</a>';
+  $output .= '</div>';
+
+  $reading = $schedule[$today->format('Y-m-d')];
+
+
+  $output = "<div class='lang-utfcs psalm-verses-cs'>";
+
+  foreach ($reading as $range => $verses) {
+
+    // Опционально: заголовок диапазона
+    $output .= "<div class='psalm-range'>" . htmlspecialchars($range) . "</div>";
+
+    // Попробуем извлечь номер псалма из диапазона (143:1-143:5 → 143)
+    preg_match('/^(\d+):/', $range, $m);
+    $psalmNumber = $m[1] ?? null;
+
+    $verseNumber = null;
+
+    foreach ($verses as $index => $verseText) {
+
+      // Если нужно показывать номер стиха
+      if ($psalmNumber !== null) {
+        // Начальный стих берём из диапазона
+        if ($verseNumber === null) {
+          preg_match('/:(\d+)/', $range, $n);
+          $verseNumber = (int)($n[1] ?? 1);
+        } else {
+          $verseNumber++;
+        }
+
+        $ref = $psalmNumber . ':' . $verseNumber;
+      } else {
+        $ref = '';
+      }
+
+      $output .= '<div class="psalm-verse-cs">'
+                 . '<span class="verse-number">'
+                 . htmlspecialchars($ref)
+                 . '</span> '
+                 . htmlspecialchars($verseText)
+                 . '</div>';
+    }
+
+  }
+
+  $output .= '</div>';
+
+
+
+
+
+
+
+
+  $output.= "<div class='lang-utfcs psalm-verses-cs'>";
+
+  foreach ($reading as $range => $verses) {
+
+    // Опционально: заголовок диапазона
+    $output .= "<div class='psalm-range'>" . htmlspecialchars($range) . "</div>";
+
+    // Попробуем извлечь номер псалма из диапазона (143:1-143:5 → 143)
+    preg_match('/^(\d+):/', $range, $m);
+    $psalmNumber = $m[1] ?? null;
+
+    $verseNumber = null;
+
+    foreach ($verses as $index => $verseText) {
+
+      // Если нужно показывать номер стиха
+      if ($psalmNumber !== null) {
+        // Начальный стих берём из диапазона
+        if ($verseNumber === null) {
+          preg_match('/:(\d+)/', $range, $n);
+          $verseNumber = (int)($n[1] ?? 1);
+        } else {
+          $verseNumber++;
+        }
+
+        $ref = $psalmNumber . ':' . $verseNumber;
+      } else {
+        $ref = '';
+      }
+
+      $output .= '<div class="psalm-verse-cs">'
+                 . '<span class="verse-number">'
+                 . htmlspecialchars($ref)
+                 . '</span> '
+                 . htmlspecialchars($verseText)
+                 . '</div>';
+    }
+
+
+  }
+
   $output .= '</div>';
 
 
