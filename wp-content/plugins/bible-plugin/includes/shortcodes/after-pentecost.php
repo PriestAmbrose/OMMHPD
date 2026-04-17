@@ -3,173 +3,88 @@ if ( ! defined( 'ABSPATH' ) ) {
   exit;
 }
 
-
-
-
 function bp_after_pentecost_shortcode() {
   $schedule = include __DIR__ . '/../bible-readings/tools/psalms_schedule.php';
-  $start_day = new DateTime('2025-09-12'); // Example date for Orthodox Pentecost
-  // Default: today’s date (in site timezone)
   $tz = new DateTimeZone( get_option('timezone_string') ?: 'UTC' );
-  $year = isset($_GET['bp_year']) ? intval($_GET['bp_year']) : (int) date('Y');
+
+  $year  = isset($_GET['bp_year']) ? intval($_GET['bp_year']) : (int) date('Y');
   $month = isset($_GET['bp_month']) ? intval($_GET['bp_month']) : (int) date('n');
-  $day = isset($_GET['bp_day']) ? intval($_GET['bp_day']) : (int) date('j');
+  $day   = isset($_GET['bp_day']) ? intval($_GET['bp_day']) : (int) date('j');
 
-  // Validate month/day ranges to avoid invalid dates
-  if ($month < 1 || $month > 12) {
-    $month = (int) date('n');
-  }
+  // Validate month/day ranges
+  if ($month < 1 || $month > 12) $month = (int) date('n');
   $max_day = cal_days_in_month(CAL_GREGORIAN, $month, $year);
-  if ($day < 1 || $day > $max_day) {
-    $day = (int) date('j');
-  }
+  if ($day < 1 || $day > $max_day) $day = (int) date('j');
 
-  // Build DateTime object
   $date_str = sprintf('%04d-%02d-%02d', $year, $month, $day);
-  $today = DateTime::createFromFormat('Y-m-d', $date_str, $tz);
-  if (! $today) {
-    // fallback to today if invalid date format
-    $today = new DateTime('now', $tz);
-  }
-
-  $psalm = array_key_first($schedule[$today->format('Y-m-d')]);
-
-
-  '<a href="https://azbyka.ru/biblia/?Ps.' . $psalm . '" target="_blank">Read Psalm ' . $psalm. '</a>';
-  $url = "https://azbyka.ru/biblia/?Ps." . $psalm ."&en-kjv";
-
-  // Load HTML
-  $html = file_get_contents($url);
-
-  // Parse DOM
-  $dom = new DOMDocument();
-  libxml_use_internal_errors(true);
-  $dom->loadHTML('<?xml encoding="utf-8" ?>' . $html);
-  libxml_clear_errors();
-
-  $xpath = new DOMXPath($dom);
-  $nodes = $xpath->query("//*[contains(concat(' ', normalize-space(@class), ' '), ' crossref-verse ')]");
-
-  // Wrap verses in lang-utfcs
-  $output = "<div class='lang-utfcs psalm-verses-cs'>";
-  foreach ($nodes as $node) {
-    $verseText = trim($node->textContent);
-    $chapter = $node->getAttribute('data-chapter'); // chapter
-    $line = $node->getAttribute('data-line');       // line/verse
-    $verseRef = $node->getAttribute('data-verse');  // e.g., Ps.9:6
-
-    $output .= '<div class="psalm-verse-cs">'
-               . '<span class="verse-number">'
-               . htmlspecialchars($chapter . ':' . $line)  // 9:6
-               . '</span> '
-               . htmlspecialchars($verseText)
-               . '</div>';
-
-  }
-  $output .= '<a href="'. $url . '" target="_blank">Read Psalm ' . $psalm . '</a>';
-  $output .= '</div>';
+  $today = DateTime::createFromFormat('Y-m-d', $date_str, $tz) ?: new DateTime('now', $tz);
 
   $reading = $schedule[$today->format('Y-m-d')];
 
+  $output = '';
 
-  $output = "<div class='lang-utfcs psalm-verses-cs'>";
 
+
+  // ===================== English =====================
+  // Use azbyka.ru with &en-kjv
+  $psalmNumber = array_key_first($reading); // pick first psalm for URL
+  $url = "https://azbyka.ru/biblia/?Ps." . $psalmNumber . "&en-kjv";
+
+  $html = @file_get_contents($url);
+  if ($html) {
+    $dom = new DOMDocument();
+    libxml_use_internal_errors(true);
+    $dom->loadHTML('<?xml encoding="utf-8" ?>' . $html);
+    libxml_clear_errors();
+    $xpath = new DOMXPath($dom);
+
+    $nodes = $xpath->query("//*[contains(concat(' ', normalize-space(@class), ' '), ' crossref-verse ')]");
+
+    $output .= "<div class='lang-en psalm-verses-en'>";
+    foreach ($nodes as $node) {
+      $verseText = trim($node->textContent);
+      $chapter   = $node->getAttribute('data-chapter');
+      $line      = $node->getAttribute('data-line');
+      $ref       = $chapter && $line ? "$chapter:$line" : '';
+
+      $output .= '<div class="psalm-verse-en">'
+                 . '<span class="verse-number">' . htmlspecialchars($ref) . '</span> '
+                 . htmlspecialchars($verseText)
+                 . '</div>';
+    }
+    $output .= '<a href="' . $url . '" target="_blank">Read Psalm ' . $psalmNumber . ' (English)</a>';
+    $output .= '</div>';
+  }
+  // ===================== Slavonic =====================
+  $output .= "<div class='lang-utfcs psalm-verses-cs'>";
   foreach ($reading as $range => $verses) {
-
-    // Опционально: заголовок диапазона
-    $output .= "<div class='psalm-range'>" . htmlspecialchars($range) . "</div>";
-
-    // Попробуем извлечь номер псалма из диапазона (143:1-143:5 → 143)
     preg_match('/^(\d+):/', $range, $m);
     $psalmNumber = $m[1] ?? null;
-
     $verseNumber = null;
 
-    foreach ($verses as $index => $verseText) {
+    $output .= "<div class='psalm-range'>" . htmlspecialchars($range) . "</div>";
 
-      // Если нужно показывать номер стиха
+    foreach ($verses as $verseText) {
       if ($psalmNumber !== null) {
-        // Начальный стих берём из диапазона
         if ($verseNumber === null) {
           preg_match('/:(\d+)/', $range, $n);
           $verseNumber = (int)($n[1] ?? 1);
         } else {
           $verseNumber++;
         }
-
         $ref = $psalmNumber . ':' . $verseNumber;
       } else {
         $ref = '';
       }
 
       $output .= '<div class="psalm-verse-cs">'
-                 . '<span class="verse-number">'
-                 . htmlspecialchars($ref)
-                 . '</span> '
+                 . '<span class="verse-number">' . htmlspecialchars($ref) . '</span> '
                  . htmlspecialchars($verseText)
                  . '</div>';
     }
-
   }
-
   $output .= '</div>';
-
-
-
-
-
-
-
-
-  $output.= "<div class='lang-utfcs psalm-verses-cs'>";
-
-  foreach ($reading as $range => $verses) {
-
-    // Опционально: заголовок диапазона
-    $output .= "<div class='psalm-range'>" . htmlspecialchars($range) . "</div>";
-
-    // Попробуем извлечь номер псалма из диапазона (143:1-143:5 → 143)
-    preg_match('/^(\d+):/', $range, $m);
-    $psalmNumber = $m[1] ?? null;
-
-    $verseNumber = null;
-
-    foreach ($verses as $index => $verseText) {
-
-      // Если нужно показывать номер стиха
-      if ($psalmNumber !== null) {
-        // Начальный стих берём из диапазона
-        if ($verseNumber === null) {
-          preg_match('/:(\d+)/', $range, $n);
-          $verseNumber = (int)($n[1] ?? 1);
-        } else {
-          $verseNumber++;
-        }
-
-        $ref = $psalmNumber . ':' . $verseNumber;
-      } else {
-        $ref = '';
-      }
-
-      $output .= '<div class="psalm-verse-cs">'
-                 . '<span class="verse-number">'
-                 . htmlspecialchars($ref)
-                 . '</span> '
-                 . htmlspecialchars($verseText)
-                 . '</div>';
-    }
-
-
-  }
-
-  $output .= '</div>';
-
-
   return $output;
 }
-
-
-
-
 
 add_shortcode('after_pentecost', 'bp_after_pentecost_shortcode');
