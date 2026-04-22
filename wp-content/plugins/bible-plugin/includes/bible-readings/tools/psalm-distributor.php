@@ -170,17 +170,18 @@ function isLent(DateTime $d): bool
   return $d >= $start && $d <= $end;
 }
 
-function nothing(): array
+function nothing(): array // temporary arbitrary solution for great thursday and easter weeks to fill in the gaps
+  //fixed after analyzing the gaps, but need to understand what is actually is read, make replacements, swaps etc.
 {
   echo 'nothing';
   return [
-    'Sunday'    => [ ],
-    'Monday'    => [ ],
-    'Tuesday'   => [ ],
-    'Wednesday' => [],
-    'Thursday'  => [ ],
-    'Friday'    => [],
-    'Saturday'  => [],
+    'Sunday'    => [ 16],
+    'Monday'    => [19 ],
+    'Tuesday'   => [2 ],
+    'Wednesday' => [7],
+    'Thursday'  => [2,19 ],
+    'Friday'    => [7,19],
+    'Saturday'  => [13,2],
   ];
 }
 
